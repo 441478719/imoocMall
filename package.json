@@ -1,0 +1,20 @@
+{
+  "name": "imoocmall",
+  "version": "1.0.0",
+  "description": "慕课网商城系统",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/441478719/imoocMall.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/441478719/imoocMall/issues"
+  },
+  "homepage": "https://github.com/441478719/imoocMall#readme"
+ 
+}
