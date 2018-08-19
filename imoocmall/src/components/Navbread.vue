@@ -2,15 +2,21 @@
     <section class="bread">
         <div class="bread-wrap">
             <nav class="">
+                <div class="bb" >
                 <a href="/">
                     Home
                 </a>
                 <slot></slot>
+                </div>
             </nav>
         </div>
     </section>
 </template>
 <style>
+.bb{
+    position: absolute;
+    left:56px;
+}
   .bread{
       height: 45px;
       line-height: 45px;
@@ -20,6 +26,7 @@
       padding: 0 10px;
       font-size: 14px;
       color: #a1a1a1;
+      position: relative;
   }
   .bread-wrap a{
     position: relative;
@@ -38,11 +45,4 @@
 </style>
 <script>
 
-    export default{
-        data(){
-            return{
-                msg:'hello vue'
-            }
-        }
-    }
 </script>
