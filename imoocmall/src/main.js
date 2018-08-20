@@ -7,7 +7,7 @@ import router from './router'
 // import Vuex from 'vuex'
 // import VueLazyload from 'vue-lazyload'
 // import infiniteScroll from 'vue-infinite-scroll'
-// import { currency } from './util/currency'
+import { currency } from './util/currency'
 
 // import './assets/css/base.css'
 // import './assets/css/checkout.css'
@@ -17,7 +17,7 @@ import infiniteScroll from 'vue-infinite-scroll';
 Vue.use(infiniteScroll);
 Vue.config.productionTip = false
 
-// Vue.filter(currency);
+Vue.filter('currency', currency);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

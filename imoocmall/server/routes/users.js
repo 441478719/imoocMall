@@ -93,6 +93,7 @@ router.get('/cartList',function(req,res,next){
     }
     else{
       if(doc)
+      console.log(doc);
       {
         res.json({
           status:'0',
@@ -103,5 +104,100 @@ router.get('/cartList',function(req,res,next){
     }
   })
 })
+router.post('/editCart',function(req,res,next){
+  var productId=req.body.productId;
+  var productNum=req.body.productNum;
+  var checked=req.body.checked;
+  var userId=req.cookies.userId;
+  users.findOne({userId:userId},function(err,doc){
+    if(err)
+    {
+      res.json({
+        status:'1',
+        msg:res.message,
+        result:''
+      })
+    }
+    else
+    {
+      if(doc)
+      {
+        doc.cartList.forEach((item)=>{
+          if(item.productId==productId)
+          {
+            item.productNum=productNum;
+            item.checked=checked;
+          }
+        })
+        doc.save(function(err,doc2){
+          if(err)
+          {
+            res.json({
+              status: '1',
+              msg: res.message,
+              result: ''
+            })
+          }
+          else{
+            res.json({
+              status: '0',
+              msg: '',
+              result: 'suc'
+            })
+          }
+        })
+      }
+    }
+  })
+})
 
+router.post('/deleteProduct',function(req,res,next){
+  let productId=req.body.productId;
+  let userId=req.cookies.userId;
+  users.update({userId:userId},{
+    $pull:{
+      'cartList':{
+        'productId':productId
+      }
+    }
+  },function(err,doc){
+    if(err)
+    {
+      res.json({
+        status:'1',
+        msg:err.message,
+        result:''
+      })
+    }
+    else
+    {
+      res.json({
+        status: '0',
+        msg: '',
+        result: 'delete success'
+      })
+    }
+  })
+})
+router.get('/checkLogin',function(req,res,next){
+  var userId=req.cookies.userId;  
+  
+    if(userId)
+    {
+      res.json({
+        status:'0',
+        msg:'',
+        result:req.cookies.userName || ''
+      })
+    }
+    else
+    {
+      res.json({
+        status: '1',
+        msg: '当前用户未登录',
+        result: ''
+      })
+    }
+  
+})
 module.exports = router;

@@ -21,6 +21,9 @@
       height: 45px;
       line-height: 45px;
       background-color: #f0f0f0;
+      width: 100%;
+      margin: 0;
+      padding: 0;
   }
   .bread-wrap{
       padding: 0 10px;

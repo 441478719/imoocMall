@@ -27,3 +27,32 @@
     </div>
   </footer>
 </template>
+<style>
+    .footer{
+      font-size: 12px;
+      height: 100px;
+      width: 100%;
+      color: #ada9a5;
+      
+    }
+    .footer__inner{
+       margin-left:  10%;
+       margin-right: 10%;
+       position: relative;
+       height: 100px;
+       line-height: 100px;
+      }
+    a{
+      color: #ada9a5;
+    }
+    .footer__region{
+      position: absolute;
+      left: 0;
+    }
+    .footer__secondary__nav
+    {
+      position: absolute;
+      right:0;
+    }
+
+</style>

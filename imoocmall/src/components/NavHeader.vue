@@ -50,6 +50,9 @@ import Navbread from './Navbread'
       
      }
    },
+   mounted() {
+     this.checkLogin();
+   },
    components: {
      Navbread
    },
@@ -68,6 +71,25 @@ import Navbread from './Navbread'
           this.surface=false;
           this.boxShadow=false;
           this.msg='';
+       })
+     },
+     checkLogin(){
+       axios.get('/users/checkLogin').then((response)=>{
+         let res=response.data;
+        if(res.status=='0')
+        {
+          this.login=false;
+          this.logout=true;
+          this.username=res.result;
+        }
+        else{
+          if(this.$route.path!='/')
+          {
+            this.$router.push({
+              path:'/'
+            })
+          }
+        }
        })
      },
      loginevent(){

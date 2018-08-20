@@ -55,21 +55,20 @@
       <modal :mdShow="mdShow" @close="closeModal" >
         <p slot="message">请先登录否则无法加入到购物车中</p>
         <div slot="btnGroup">
-            <button class="btn-c">关闭</button>
+            <button class="btn-c" @click="closeModal">关闭</button>
         </div>
       </modal>
       <modal :mdShow="mdShowCart" @close="closeModal" > 
         <p slot="message">加入购物车成功</p>
         <div slot="btnGroup">
           <a class="btn-d" @click="mdShowCart=false">继续购物</a>
-          <router-link to="/CartList" class="btn-d" href="javascript:;">
+          <router-link to="/CartList" class="btn-d" href="javascript:;">查看购物车
           </router-link>
         </div>
       </modal>
     </div>
 
     <nav-footer></nav-footer>
-
   </div>
 </template>
 
@@ -206,7 +205,7 @@ export default {
   padding: 0;
   height: 100%;
   width: 100%;
-  float: left;
+  // float: left;
   position: relative;
   font-size: 10px;
   #container-header {
