@@ -1,5 +1,6 @@
 <template>
  <div>
+      <link rel="stylesheet" href="http://at.alicdn.com/t/font_799328_cb4jlawj29.css">
      <nav-header></nav-header>
      <nav-bread><span>Addresslist</span></nav-bread>
      <div class="addressList">
@@ -37,7 +38,74 @@
           </defs>
         </svg>
         <div class="container">
-
+          <div class="check-step">
+              <ul>
+                <li class="comfirm"><span>Confirm</span> address</li>
+                <li><span>View your</span> order</li>
+                <li><span>Make</span> payment</li>
+                <li><span>Order</span> confirmation</li>
+              </ul>
+          </div>
+          <div class="page-title">
+            <h2><span>SHIPPING ADDRESS</span></h2>
+          </div>
+          <div class="addr-list">
+            <ul>
+              <li v-for="(item,index) in addressListFilter" :key="index" @click="checkIndex=index;selectedAddr=item.addressId" :class="{'checkItem':checkIndex==index}">
+                  <dl>
+                    <dt class="name">{{item.userName}}</dt>
+                    <dd class="addr">{{item.streetName}}</dd>
+                    <dd class="tel">{{item.tel}}</dd>
+                    <!-- {{selectedAddr}} -->
+                  </dl>
+                  <div class="comfirmAddress" v-if="item.isDefault" >
+                      <span>Defalut address</span>
+                  </div>
+                  <div class="comfirmAddress " v-if="!item.isDefault" :class="{'checkComfirm':checkIndex!=index}" @click="setDef(item)">
+                    <span >Set defalut </span>
+                  </div>
+                  <div class="delComfirm">
+                    <a href="javascript:;" @click="delAddr(item)">
+                        <i class="iconfont icon-shanchu"></i>
+                    </a>
+                  </div>
+              </li>
+              <li class="addr-new">
+                    <div class="add-new-inner">
+                      <i class="icon-add">
+                        <svg class="icon icon-add"><use xlink:href="#icon-add"></use></svg>
+                      </i>
+                      <p>Add new address</p>
+                    </div>
+                  </li>
+            </ul>
+          </div>
+          <div class="addr-method" > 
+              <a @click="expand" href="javascript:;">more
+                <i class="i-updown" :class="{'itransform':tran}">
+                  <i class="i-updown-l"></i>
+                  <i class="i-updown-r"></i>
+                </i>
+              </a>
+              
+          </div>
+          <div class="page-title">
+            <h2><span>SHIPPING MEHTHOD</span></h2>
+          </div>
+          <div class="addr-list" >
+            <ul>
+              <li>
+                <dl>
+                  <dt class="name">Standarding shipping</dt>
+                  <dd class="addr">Free</dd>
+                  <dd class="tel"><p>Once shipped，Order should arrive in the destination in 1-7 business days</p></dd>
+                </dl>
+              </li>
+            </ul>
+          </div>
+          <div class="addr-footer">
+              <router-link :to="{path:'addressComfirm',query:{'addressId':selectedAddr}}" class="btn-s">NEXT</router-link>
+          </div>
         </div>
      </div>
      <nav-footer></nav-footer>
@@ -53,7 +121,12 @@ import axios from "axios";
  export default {
    data () {
      return {
-
+       addressList:[],
+       limit:3,
+       checkIndex:'',
+       isDef:false,
+       tran:false,
+       selectedAddr:''
      }
    },
    components: {
@@ -61,6 +134,60 @@ import axios from "axios";
        NavBread,
        NavFooter,
        Modal
+   },
+   mounted () {
+     this.init();
+   },
+   computed:{
+     addressListFilter(){
+       return this.addressList.slice(0,this.limit);
+     }
+   },
+   methods:{
+     init(){
+        axios.get("users/addressList").then((response)=>{
+       let res=response.data;
+       if(res.status=='0')
+       {
+         this.addressList=res.result;
+       }
+     })
+     },
+     expand(){
+       this.tran=!this.tran;
+       if(this.limit==3)
+       {
+         this.limit=this.addressList.length;
+       }
+       else
+       {
+         this.limit=3;
+       }
+     },
+     delAddr(item){
+       axios.post('/users/delAddress',{
+         addressId:item.addressId
+       }).then((response)=>{
+         let res=response.data;
+          if(res.status=='0')
+          {
+            this.init();
+          }
+       })
+     },
+     setDef(item){
+       axios.post("/users/setDefalutAddr",{
+         addressId:item.addressId
+       }).then((response)=>{
+         let res=response.data;
+         if(res.status=='0')
+         {
+           this.init();
+         }
+       })
+     }
+    
+
    }
  }
 </script>
@@ -73,6 +200,173 @@ import axios from "axios";
   padding-right: 10%;
   font-size: 22px;
   background: #f5f7fc;
+  
 }
+.check-step{
+  padding: 30px 0 20px 0;
+  font-size: 16px;
+  font-weight: bold;
+  width: 100%;
  
+}
+.check-step ul::after{
+  content: '';
+  display: block;
+  clear: both;
+}
+.check-step ul li{
+  float: left;
+  width: 23%;
+  height: 100%;
+  color:#999;
+  text-align: center;
+  position: relative;
+   border-bottom: 2px solid #ccc;
+   padding-bottom: 30px;
+  /* padding-bottom: 30px; */
+}
+.check-step ul{
+  padding: 0px;
+}
+.check-step ul li::after{
+  position: absolute;
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  content: '';
+  bottom: -7px;
+  margin-left: -7px;
+  background: #ccc;
+  left: 50%;
+  
+}
+.check-step ul li.comfirm{
+  color: #d1434a;
+  border-color: #d1434a;
+}
+.check-step ul li:first-child::after{
+  background: #d1434a;
+
+}
+.page-title{
+  font-size: 16px;
+  color: #605F5F;
+  letter-spacing: 2px;
+}
+.addr-list ul li {
+  float: left;
+  position: relative;
+  margin-left: 20px;
+  border: 2px solid #e9e9e9;
+  width: 20%;
+  margin-bottom: 20px;
+  background: white;
+}
+.addr-list ul::after{
+  content: '';
+  clear: both;
+  display: block;
+}
+.addr-list ul{
+  padding: 0;
+  
+}
+.addr,.name ,.tel{
+  margin-left: 10px;
+}
+.name{
+  font-size: 16px;
+  color: #333;
+}
+.addr{
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #333;
+}
+.tel{
+  font-size: 14px;
+  color: #605F5F;
+}
+.comfirmAddress{
+  display: block;
+  font-size: 14px;
+  color:#ee7a23;
+  margin-left: 10px;
+  transition: color 1s ease-in-out;
+}
+.checkComfirm{
+  color: white;
+}
+.addr-method{
+  text-align: center;
+
+}
+.addr-method a{
+  font-size: 14px;
+  color: #d1434a;
+}
+.addr-list ul li.checkItem{
+  border-width: 2px;
+  border-color: #ee7a23;
+}
+.add-new-inner{
+  font-size: 14px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 35px;
+}
+.icon-add{
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+}
+.i-updown{
+  display: inline-block;
+  position: relative;
+  width: 14px;
+  height: 6px;
+  transition: all 1s ease-in-out;
+}
+.i-updown-l,.i-updown-r{
+  position: absolute;
+  display: inline-block;
+  width: 7px;
+  height: 3px;
+  border-top: 1px solid #ee7a23;
+  top: 3px;
+ 
+  /* transform: rotate(180deg); */
+}
+.i-updown-r{
+  right: 0px;
+  transform: rotate(-40deg);
+}
+.i-updown-l{
+  left: 0px;
+  transform: rotate( 40deg);
+}
+.itransform{
+  transform: rotate(180deg);
+}
+.delComfirm{
+  position: absolute;
+  right: 20px;
+  bottom: 0px;
+  
+}
+.delComfirm a i{
+  display: block;
+  height: 40px;
+  width: 40px;
+  font-size: 40px;
+}
+.btn-s{
+  display: block;
+  letter-spacing: 2px;
+  background: #d1434a;
+  color: white;
+  margin-left: 70%;
+  width: 20%;
+  text-align: center;
+}
 </style>

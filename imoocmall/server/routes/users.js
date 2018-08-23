@@ -200,4 +200,111 @@ router.get('/checkLogin',function(req,res,next){
     }
   
 })
+router.get('/addressList',function(req,res,next){
+  var userId=req.cookies.userId;
+  users.findOne({userId:userId},function(err,doc){
+    if(err)
+    {
+      res.json({
+        status:'1',
+        msg:err.message,
+        result:''
+      })
+    }
+    else{
+      if(doc)
+      {
+        res.json({
+          status:'0',
+          msg:'',
+          result:doc.addressList
+        })
+      }
+      else{
+        res.json({
+          status:'1',
+          msg:'没有数据',
+          result:''
+        })
+      }
+    }
+  })
+  router.post("/delAddress", function(req, res, next) {
+    var userId = req.cookies.userId;
+    var addressId = req.body.addressId;
+    users.update(
+      { userId: userId },
+      {
+        $pull: {
+          'addressList': {
+            'addressId': addressId
+          }
+        }
+      },
+      function(err, doc) {
+        if (err) {
+          res.json({
+            status: "1",
+            msg: err.message,
+            result: ""
+          });
+        } 
+        else {
+          res.json({
+            status: "0",
+            msg: "",
+            result: "suc delAddress",
+          });
+        }
+      }
+    );
+  });
+})
+router.post("/setDefalutAddr",function(req,res,next){
+  var userId=req.cookies.userId;
+  var addressId=req.body.addressId;
+  users.findOne({userId:userId},function(err,doc){
+    if(err)
+    {
+      res.json({
+        status:'1',
+        msg:err.message,
+        result:''
+      })
+    }
+    else
+    {
+      doc.addressList.forEach((item)=>{
+        if(item.addressId==addressId)
+        {
+          item.isDefault=true;
+        }
+        else
+        {
+          item.isDefault=false;
+        }
+      })
+      doc.save(function(err1,doc1)
+    {
+      if(err1)
+      {
+        res.json({
+          status: '1',
+          msg: err.message,
+          result: ''
+        })
+      }
+      else
+      {
+        res.json({
+          status:'0',
+          msg:'',
+          result:'suc setDefault'
+        })
+      }
+    })
+      
+    }
+  })
+});
 module.exports = router;

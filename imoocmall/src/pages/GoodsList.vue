@@ -304,7 +304,7 @@ export default {
           padding: 0 10px;
       }
       .btn{
-        display: inline-block;
+        display: block;
         height: 40px;
         line-height: 40px;
         color: #d1434a;
@@ -314,8 +314,8 @@ export default {
         white-space: nowrap;
         cursor: pointer;
         text-align: center;
-        width: 78%;
-        margin: 10px 10px;
+        
+       
       }
       .btn-m{
         padding: 0 10px;

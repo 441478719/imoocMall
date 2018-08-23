@@ -1,5 +1,6 @@
 <template>
     <div>
+        <link rel="stylesheet" href="http://at.alicdn.com/t/font_785929_li8xp0av72f.css">
         <nav-header></nav-header>
         <nav-bread>
             <span>CartList</span>
@@ -366,6 +367,9 @@ export default {
                 vertical-align: middle;
                 width: 10%;
                 text-align: center;
+                a i {
+                    font-size: 30px;
+                }
         }
         .cartList-salePrice {
           display: inline-block;

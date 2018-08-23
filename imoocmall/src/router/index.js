@@ -3,7 +3,8 @@ import Router from 'vue-router'
 
 import goodslist from '@/pages/GoodsList.vue'
 import CartList from '@/pages/CartList.vue'
-import AddressList from "@/pages/AddressList.vue";
+import AddressList from "@/pages/AddressList.vue"
+import addressComfirm from '@/pages/addressComfirm'
 Vue.use(Router)
 
 export default new Router({
@@ -22,6 +23,11 @@ export default new Router({
       path: "/AddressList",
       name: "AddressList",
       component: AddressList
+    },
+    {
+      path:'/addressComfirm',
+      name: addressComfirm,
+      component: addressComfirm
     }
   ]
 });
